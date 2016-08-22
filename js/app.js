@@ -225,7 +225,7 @@ function checkWin() {
     winner = player();
     updateWinner();
   } else if (b1 !== blank && b2 !== blank && b3 !== blank && b4 !== blank && b5 !== blank && b6 !== blank && b7 !== blank && b8 !== blank && b9 !== blank){
-    winner = tie;
+    winner = "tie";
     updateWinner();
   }
 }
@@ -240,7 +240,7 @@ function updateWinner() {
     alert("Computer wins!");
     cScore = cScore + 1;
     document.getElementById("computerScore").innerHTML = cScore;
-  } else {
+  } else if (winner === "tie"){
     alert("It's a tie!");
     tScore = tScore + 1;
     document.getElementById("tieScore").innerHTML = tScore;
