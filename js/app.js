@@ -28,9 +28,9 @@ var b7 = box7.innerHTML;
 var b8 = box8.innerHTML;
 var b9 = box9.innerHTML;
 
-var pScore = document.getElementById("playerScore").innerHTML;
-var tScore = document.getElementById("tieScore").innerHTML;
-var cScore = document.getElementById("computerScore").innerHTML;
+var pScore = parseInt(document.getElementById("playerScore").innerHTML);
+var tScore = parseInt(document.getElementById("tieScore").innerHTML);
+var cScore = parseInt(document.getElementById("computerScore").innerHTML);
 
 var grid = [box1, box2, box3, box4, box5, box6, box7, box8, box9];
 
@@ -98,22 +98,24 @@ function checkWhoseTurn() {
     } else {
       console.log("Player made a move");
       grid[i].innerHTML = x;
-      checkFill();
+      assignBs();
+      checkWin();
+      // checkFill();
       console.log("Player filled Box " + i);
       turn = turn + 1;
     }
   } else {
     console.log("Computer's Turn part1");
     cTurn();
-    checkFill();
+    assignBs();
+    // checkFill();
+    checkWin();
     turn = turn + 1;
   }
 }
 
 function cTurn() {
   console.log("Computer turn part2", randomN());
-  randomN;
-  z = randomN();
   computerFills();
 }
 
@@ -122,77 +124,70 @@ function computerFills() {
   // Math.random();
   console.log("Computer turn part3");
   if (z < 0.11) {
-    if (b1 === blank ) {
-      console.log("Filling b1");
       m = 0;
-    }
-  } else if (z < 0.22) {
-    if (b2 === blank ) {
-      console.log("Filling b2");
+  }
+  else if (z < 0.22) {
       m = 1;
-    }
   } else if (z < 0.33) {
-    if (b3 !== x && b3 !== o) {
-      console.log("Filling b3");
       m = 2;
-    }
   } else if (z < 0.44) {
-    if (b4 === blank ) {
-      console.log("Filling b4");
       m = 3;
-    }
   } else if (z < 0.55) {
-    if (b5 === blank ) {
-      console.log("Filling b5");
       m = 4;
-    }
   } else if (z < 0.66) {
-    if (b6 === blank ) {
-      console.log("Filling b6");
       m = 5;
-    }
   } else if (z < 0.77) {
-    if (b7 === blank ) {
-      console.log("Filling b7");
       m = 6;
-    }
   } else if (z < 0.88) {
-    if (b8 === blank ) {
-      console.log("Filling b8");
       m = 7;
-    }
   } else if (z < 1){
-    if (b9 === blank ) {
-      console.log("Filling b9");
       m = 8;
-    }
-  } else {
-    console.log("Still stuck here sigh.")
+  }
+  if(grid[m].innerHTML!== blank){
+    console.log(grid[m]);
     computerFills();
   }
-  grid[m].innerHTML = o;
+  else {
+    grid[m].innerHTML = o;
+  }
 }
 
 function randomN() {
   return Math.random();
 }
 
-function checkFill() {
-  console.log("Checking filling")
-  if (b1 !== blank && b2 !== blank && b3 !== blank) {
-    checkWin();
-  } else if (b4 !== blank && b5 !== blank && b6 !== blank) {
-    checkWin();
-  } else if (b7 !== blank && b8 !== blank && b9 !== blank) {
-    checkWin();
-  } else if (b1 !== blank && b5 !== blank && b9 !== blank) {
-    checkWin();
-  } else if (b3 !== blank && b5 !== blank && b7 !== blank) {
-    checkWin();
-  } else {
-    return;
-  }
+function assignBs() {
+  b1 = box1.innerHTML;
+  b2 = box2.innerHTML;
+  b3 = box3.innerHTML;
+  b4 = box4.innerHTML;
+  b5 = box5.innerHTML;
+  b6 = box6.innerHTML;
+  b7 = box7.innerHTML;
+  b8 = box8.innerHTML;
+  b9 = box9.innerHTML;
 }
+
+// function checkFill() {
+//   console.log("Checking filling")
+//   if (b1 !== blank && b2 !== blank && b3 !== blank) {
+//     checkWin();
+//   } else if (b4 !== blank && b5 !== blank && b6 !== blank) {
+//     checkWin();
+//   } else if (b7 !== blank && b8 !== blank && b9 !== blank) {
+//     checkWin();
+//   } else if (b1 !== blank && b4 !== blank && b7 !== blank) {
+//     checkWin();
+//   } else if (b2 !== blank && b5 !== blank && b8 !== blank) {
+//     checkWin();
+//   } else if (b3 !== blank && b6 !== blank && b9 !== blank) {
+//     checkWin();
+//   } else if (b1 !== blank && b5 !== blank && b9 !== blank) {
+//     checkWin();
+//   } else if (b3 !== blank && b5 !== blank && b7 !== blank) {
+//     checkWin();
+//   }
+// }
 
 function player() {
   console.log("Checking player!")
@@ -232,8 +227,6 @@ function checkWin() {
   } else if (b1 !== blank && b2 !== blank && b3 !== blank && b4 !== blank && b5 !== blank && b6 !== blank && b7 !== blank && b8 !== blank && b9 !== blank){
     winner = tie;
     updateWinner();
-  } else {
-    return;
   }
 }
 
@@ -241,18 +234,26 @@ function updateWinner() {
   console.log("Updating winner!")
   if (winner === "Player") {
     pScore = pScore + 1;
+    document.getElementById("playerScore").innerHTML = pScore;
     alert("Player wins!");
   } else if (winner === "Computer") {
     alert("Computer wins!");
     cScore = cScore + 1;
+    document.getElementById("computerScore").innerHTML = cScore;
   } else {
     alert("It's a tie!");
     tScore = tScore + 1;
+    document.getElementById("tieScore").innerHTML = tScore;
+  }
+  resetGame();
+}
+
+function resetGame() {
+  for(var k = 0; k < grid.length; k ++) {
+    grid[k].innerHTML = "";
   }
 }
 
 document.getElementById("reset").addEventListener("click", function() {
-  for(var k = 0; k < grid.length; k ++) {
-    grid[k].innerHTML = "";
-  }
+  resetGame();
 })
